@@ -38,7 +38,7 @@ module QiitaClone
                        controller_specs: false,
                        request_specs: true
     end
-    
+
     config.api_only = true
 
     # Don't generate system test files.
