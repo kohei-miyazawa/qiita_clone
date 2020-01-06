@@ -45,6 +45,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
+  gem 'rubocop-performance'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'pry-doc'
