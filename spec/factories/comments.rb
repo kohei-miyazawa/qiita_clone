@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :comment do
-    body { Faker::Lorem.sentence}
+    body { Faker::Lorem.sentence }
     user
     article
   end
