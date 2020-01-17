@@ -32,11 +32,18 @@ RSpec.describe User, type: :model do
 
       context "同一のemailが存在する時" do
         before { create(:user, email: "miyazawa@example.com") }
-
         let(:user) { build(:user, email: "miyazawa@example.com") }
         it "エラーする(has already been taken)" do
           user.valid?
           expect(user.errors.messages[:email]).to include "has already been taken"
+        end
+      end
+
+      context "emailに@が含まれない時" do
+        let(:user) { build(:user, email: "miyazawaexample.com") }
+        it "エラーする(is not an email)" do
+          user.valid?
+          expect(user.errors.messages[:email]).to include "is not an email"
         end
       end
     end
