@@ -9,9 +9,6 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: true
-  validates :password, presence: true
-
   #deviseにおいて定義されているemailの形式 @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
   #deviseにおいて定義されているpasswordの長さ @@password_length = 6..128
 
