@@ -53,7 +53,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
 
     it "記事のレコードが作成できる" do
-      expect { subject }.to change { current_user.articles.count }.by(1)
+      expect { subject }.to change { Article.count }.by(1)
       res = JSON.parse(response.body)
       expect(res["title"]).to eq params[:article][:title]
       expect(res["body"]).to eq params[:article][:body]
@@ -89,6 +89,21 @@ RSpec.describe "Api::V1::Articles", type: :request do
       it "更新できない" do
         expect { subject }.to raise_error ActiveRecord::RecordNotFound
       end
+    end
+  end
+
+  describe "DELETE /api/v1/articles/:id" do
+    subject { delete(api_v1_article_path(article.id)) }
+    let!(:article) { create(:article, user: current_user) }
+    let(:current_user) { create(:user) }
+
+    before do
+      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
+    end
+
+    it "記事を削除できる" do
+      expect { subject }.to change { Article.count }.by(-1)
+      expect(response).to have_http_status(200)
     end
   end
 end
