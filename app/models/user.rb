@@ -8,6 +8,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
 
+  validates :name, presence: true
+  #deviseにおいて定義されているemailの形式 @@email_regexp = /\A[^@\s]+@[^@\s]+\z/
+  #deviseにおいて定義されているpasswordの長さ @@password_length = 6..128
+
   has_many :articles, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :article_likes, dependent: :destroy
