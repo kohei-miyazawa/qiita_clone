@@ -14,7 +14,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       expect(res.length).to eq 3
       expect(res[0].keys).to eq ["id", "title", "body", "user"]
       expect(res[0]["user"].keys).to eq ["id", "name"]
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(:ok)
     end
   end
 
@@ -30,7 +30,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
         expect(res["id"]).to eq article.id
         expect(res["title"]).to eq article.title
         expect(res["body"]).to eq article.body
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(:ok)
       end
     end
 
