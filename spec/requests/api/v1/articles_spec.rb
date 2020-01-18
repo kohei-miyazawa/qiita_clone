@@ -53,7 +53,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
 
     it "記事のレコードが作成できる" do
-      expect { subject }.to change { Article.count }.by(1)
+      expect { subject }.to change { current_user.articles.count }.by(1)
       res = JSON.parse(response.body)
       expect(res["title"]).to eq params[:article][:title]
       expect(res["body"]).to eq params[:article][:body]
@@ -75,7 +75,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       let(:article) { create(:article, user: current_user) }
 
       it "記事の更新ができる" do
-        expect { subject }.to change { Article.find(article.id).body }.from(article.body).to(params[:article][:body]) &
+        expect { subject }.to change { article.reload.body }.from(article.body).to(params[:article][:body]) &
                               not_change { Article.find(article.id).title } &
                               not_change { Article.find(article.id).created_at }
         expect(response).to have_http_status(:ok)
@@ -102,9 +102,20 @@ RSpec.describe "Api::V1::Articles", type: :request do
       allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
     end
 
-    it "記事を削除できる" do
-      expect { subject }.to change { Article.count }.by(-1)
-      expect(response).to have_http_status(:ok)
+    context "自分の記事を削除するとき" do
+      it "記事を削除できる" do
+        expect { subject }.to change { Article.count }.by(-1)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "他のuserの記事を削除するとき" do
+      let!(:article) { create(:article, user: other_user) }
+      let(:other_user) { create(:user) }
+
+      it "削除できない" do
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      end
     end
   end
 end
