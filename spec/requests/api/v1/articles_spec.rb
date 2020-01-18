@@ -63,7 +63,8 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
   describe "PATCH /api/v1/articles/:id" do
     subject { patch(api_v1_article_path(article.id), params: params) }
-    let(:params) { { article: { body:Faker::Lorem.paragraph, created_at: Time.current } } }
+
+    let(:params) { { article: { body: Faker::Lorem.paragraph, created_at: Time.current } } }
     let(:current_user) { create(:user) }
 
     before do
@@ -71,22 +72,22 @@ RSpec.describe "Api::V1::Articles", type: :request do
     end
 
     context "自分の記事を更新するとき" do
-      let(:article) {create(:article, user: current_user)}
+      let(:article) { create(:article, user: current_user) }
 
       it "記事の更新ができる" do
-        expect {subject}.to change{Article.find(article.id).body}.from(article.body).to(params[:article][:body])&
-                            not_change{Article.find(article.id).title}&
-                            not_change{Article.find(article.id).created_at}
+        expect { subject }.to change { Article.find(article.id).body }.from(article.body).to(params[:article][:body]) &
+                              not_change { Article.find(article.id).title } &
+                              not_change { Article.find(article.id).created_at }
         expect(response).to have_http_status(:ok)
       end
     end
 
     context "他のuserの記事を更新しようとるすとき" do
       let(:other_user) { create(:user) }
-      let!(:article){ create(:article, user: other_user) }
+      let(:article) { create(:article, user: other_user) }
 
       it "更新できない" do
-        expect {subject}.to raise_error ActiveRecord::RecordNotFound
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
