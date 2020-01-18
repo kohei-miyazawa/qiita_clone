@@ -1,4 +1,6 @@
 class Api::V1::ArticlesController < Api::V1::ApiController
+  before_action :set_article, only: [:update, :destroy]
+
   def index
     articles = Article.all
     render json: articles
@@ -14,9 +16,23 @@ class Api::V1::ArticlesController < Api::V1::ApiController
     render json: article
   end
 
+  def update
+    @article.update!(article_params)
+    render json: @article
+  end
+
+  def destroy
+    @article.destroy!
+    render json: @article
+  end
+
   private
 
     def article_params
       params.require(:article).permit(:title, :body)
+    end
+
+    def set_article
+      @article = current_user.articles.find(params[:id])
     end
 end

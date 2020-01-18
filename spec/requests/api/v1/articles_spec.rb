@@ -60,4 +60,62 @@ RSpec.describe "Api::V1::Articles", type: :request do
       expect(response).to have_http_status(:ok)
     end
   end
+
+  describe "PATCH /api/v1/articles/:id" do
+    subject { patch(api_v1_article_path(article.id), params: params) }
+
+    let(:params) { { article: { body: Faker::Lorem.paragraph, created_at: Time.current } } }
+    let(:current_user) { create(:user) }
+
+    before do
+      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
+    end
+
+    context "自分の記事を更新するとき" do
+      let(:article) { create(:article, user: current_user) }
+
+      it "記事の更新ができる" do
+        expect { subject }.to change { article.reload.body }.from(article.body).to(params[:article][:body]) &
+                              not_change { Article.find(article.id).title } &
+                              not_change { Article.find(article.id).created_at }
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "他のuserの記事を更新しようとるすとき" do
+      let(:other_user) { create(:user) }
+      let(:article) { create(:article, user: other_user) }
+
+      it "更新できない" do
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
+
+  describe "DELETE /api/v1/articles/:id" do
+    subject { delete(api_v1_article_path(article.id)) }
+
+    let!(:article) { create(:article, user: current_user) }
+    let(:current_user) { create(:user) }
+
+    before do
+      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
+    end
+
+    context "自分の記事を削除するとき" do
+      it "記事を削除できる" do
+        expect { subject }.to change { Article.count }.by(-1)
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "他のuserの記事を削除するとき" do
+      let!(:article) { create(:article, user: other_user) }
+      let(:other_user) { create(:user) }
+
+      it "削除できない" do
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
+      end
+    end
+  end
 end
