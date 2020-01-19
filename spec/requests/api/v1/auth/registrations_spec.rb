@@ -1,4 +1,4 @@
-require "rails_helper"
+require 'rails_helper'
 
 RSpec.describe "Api::V1::Auth::Registrations", type: :request do
   describe "POST /api/v1/auth" do
@@ -31,7 +31,7 @@ RSpec.describe "Api::V1::Auth::Registrations", type: :request do
       let(:params) { attributes_for(:user, email: nil) }
 
       it "ユーザー登録されない" do
-        expect { subject }.to change { User.count }.by(0)
+        expect { subject }.to not_change { User.count }
         expect(response.headers["uid"]).to be_blank
         expect(response.headers["access-token"]).to be_blank
         expect(response.headers["client"]).to be_blank
@@ -42,7 +42,7 @@ RSpec.describe "Api::V1::Auth::Registrations", type: :request do
       let(:params) { attributes_for(:user, password: nil) }
 
       it "ユーザー登録されない" do
-        expect { subject }.to change { User.count }.by(0)
+        expect { subject }.to not_change { User.count }
         expect(response.headers["uid"]).to be_blank
         expect(response.headers["access-token"]).to be_blank
         expect(response.headers["client"]).to be_blank
