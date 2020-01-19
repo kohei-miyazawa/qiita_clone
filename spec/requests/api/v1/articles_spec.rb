@@ -47,7 +47,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     let(:params) { { article: attributes_for(:article) } }
     let(:current_user) { create(:user) }
-    let(:headers) {current_user.create_new_auth_token}
+    let(:headers) { current_user.create_new_auth_token }
 
     it "記事のレコードが作成できる" do
       expect { subject }.to change { current_user.articles.count }.by(1)
@@ -63,7 +63,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     let(:params) { { article: { body: Faker::Lorem.paragraph, created_at: Time.current } } }
     let(:current_user) { create(:user) }
-    let(:headers) {current_user.create_new_auth_token}
+    let(:headers) { current_user.create_new_auth_token }
 
     context "自分の記事を更新するとき" do
       let(:article) { create(:article, user: current_user) }
@@ -87,11 +87,11 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "DELETE /api/v1/articles/:id" do
-    subject { delete(api_v1_article_path(article.id),headers: headers) }
+    subject { delete(api_v1_article_path(article.id), headers: headers) }
 
     let!(:article) { create(:article, user: current_user) }
     let(:current_user) { create(:user) }
-    let(:headers){ current_user.create_new_auth_token }
+    let(:headers) { current_user.create_new_auth_token }
 
     context "自分の記事を削除するとき" do
       it "記事を削除できる" do
