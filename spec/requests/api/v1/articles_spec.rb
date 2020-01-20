@@ -43,14 +43,11 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "POST /api/v1/articles" do
-    subject { post(api_v1_articles_path, params: params) }
+    subject { post(api_v1_articles_path, params: params, headers: headers) }
 
     let(:params) { { article: attributes_for(:article) } }
     let(:current_user) { create(:user) }
-
-    before do
-      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
-    end
+    let(:headers) { current_user.create_new_auth_token }
 
     it "記事のレコードが作成できる" do
       expect { subject }.to change { current_user.articles.count }.by(1)
@@ -62,14 +59,11 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "PATCH /api/v1/articles/:id" do
-    subject { patch(api_v1_article_path(article.id), params: params) }
+    subject { patch(api_v1_article_path(article.id), params: params, headers: headers) }
 
     let(:params) { { article: { body: Faker::Lorem.paragraph, created_at: Time.current } } }
     let(:current_user) { create(:user) }
-
-    before do
-      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
-    end
+    let(:headers) { current_user.create_new_auth_token }
 
     context "自分の記事を更新するとき" do
       let(:article) { create(:article, user: current_user) }
@@ -82,7 +76,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       end
     end
 
-    context "他のuserの記事を更新しようとるすとき" do
+    context "他のuserの記事を更新しようとするとき" do
       let(:other_user) { create(:user) }
       let(:article) { create(:article, user: other_user) }
 
@@ -93,14 +87,11 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "DELETE /api/v1/articles/:id" do
-    subject { delete(api_v1_article_path(article.id)) }
+    subject { delete(api_v1_article_path(article.id), headers: headers) }
 
     let!(:article) { create(:article, user: current_user) }
     let(:current_user) { create(:user) }
-
-    before do
-      allow_any_instance_of(Api::V1::ApiController).to receive(:current_user).and_return(current_user)
-    end
+    let(:headers) { current_user.create_new_auth_token }
 
     context "自分の記事を削除するとき" do
       it "記事を削除できる" do
