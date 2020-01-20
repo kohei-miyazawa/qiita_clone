@@ -31,6 +31,7 @@
 import axios from "axios";
 import { Vue, Component } from "vue-property-decorator";
 import Router from "../router/router";
+
 const headers = {
   headers: {
     Authorization: "Bearer",
@@ -40,9 +41,11 @@ const headers = {
     uid: localStorage.getItem("uid")
   }
 };
+
 @Component
 export default class Header extends Vue {
   isLoggedIn: boolean = !!localStorage.getItem("access-token");
+  
   async logout(): Promise<void> {
     await axios
       .delete("/api/v1/auth/sign_out", headers)
@@ -52,11 +55,13 @@ export default class Header extends Vue {
       .catch(e => {
         // TODO: 適切な Error 表示
         alert(e.response.data.errors);
+
         // localStorage は残っているが、
         // ログアウトはしてしまっている状態なのですべてリセットする
         this.refresh();
       });
   }
+
   private refresh(): void {
     localStorage.clear();
     Router.push("/");
@@ -70,12 +75,14 @@ export default class Header extends Vue {
 .header-link {
   text-decoration: none;
 }
+
 .register,
 .post {
   border: 2px solid #fff;
   border-radius: 5px;
 }
+
 .login {
   font-weight: bold;
 }
-</style> 
+</style>
