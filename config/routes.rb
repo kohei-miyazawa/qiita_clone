@@ -1,12 +1,4 @@
 Rails.application.routes.draw do
-  namespace :api do
-    namespace :v1 do
-      namespace :articles do
-        get 'drafts/index'
-        get 'drafts/show'
-      end
-    end
-  end
   root "homes#index"
 
   # reload 対策
@@ -17,10 +9,13 @@ Rails.application.routes.draw do
 
   namespace :api, format: "json" do
     namespace :v1 do
-      resources :articles
       mount_devise_token_auth_for "User", at: "auth", controllers: {
         registrations: "api/v1/auth/registrations",
       }
+      namespace :articles do
+        resources :draft, only: [:index, :show]
+      end
+      resources :articles
     end
   end
 end
