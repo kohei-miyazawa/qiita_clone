@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      namespace :articles do
+        get 'drafts/index'
+        get 'drafts/show'
+      end
+    end
+  end
   root "homes#index"
 
   # reload 対策
