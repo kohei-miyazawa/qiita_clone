@@ -30,10 +30,12 @@ const headers = {
     uid: localStorage.getItem("uid")
   }
 };
+
 @Component
 export default class ArticlesContainer extends Vue {
   title: string = "";
   body: string = "";
+
   async createArticle(): Promise<void> {
     const params = {
       title: this.title,
@@ -48,8 +50,6 @@ export default class ArticlesContainer extends Vue {
       .catch(e => {
         // TODO: 適切な Error 表示
         alert(e.response.data.errors);
-
-  
       });
   }
 }
@@ -71,6 +71,7 @@ export default class ArticlesContainer extends Vue {
 .body-form > .v-input__control {
   height: 100%;
 }
+
 .v-text-field .v-text-field__details {
   display: none;
 }
