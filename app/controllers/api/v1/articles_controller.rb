@@ -8,7 +8,7 @@ class Api::V1::ArticlesController < Api::V1::ApiController
   end
 
   def show
-    article = Article.publiched.find(params[:id])
+    article = Article.published.find(params[:id])
     render json: article
   end
 
