@@ -41,19 +41,15 @@ export default class ArticlesContainer extends Vue {
   title: string = "";
   body: string = "";
 
-  async created(): Promise<void> {
-    // Add 'hljs' class to code tag
+  async created(): Promise<void>{
     const renderer = new marked.Renderer();
     let data = "";
     renderer.code = function(code, lang) {
-      if (!lang || lang == "default") {
-        data = hljs.highlightAuto(code, [lang]).value;
-      } else {
-        try {
-          data = hljs.highlight(lang, code, true).value;
-        } catch (e) {
-          // Do nonthing!
-        }
+      const _lang = lang.split(".").pop();
+      try {
+        data = hljs.highlight(_lang, code, true).value;
+      } catch (e) {
+        data = hljs.highlightAuto(code).value;
       }
 
       return `<pre><code class="hljs"> ${data} </code></pre>`;
