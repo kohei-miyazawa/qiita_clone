@@ -91,11 +91,11 @@ export default class ArticleContainer extends Vue {
         alert(e.response.statusText);
       });
   }
-}
 
-moveToEditArticlePage(id: string): void {
+  moveToEditArticlePage(id: string): void {
     Router.push(`/articles/${id}/edit`);
   }
+}
 </script>
 
 <style lang="scss" scoped>

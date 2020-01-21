@@ -99,6 +99,7 @@ export default class ArticlesContainer extends Vue {
         alert(e.response.statusText);
       });
   }
+
   async createOrUpdateArticle(status: string): Promise<void> {
     enum Statuses {
       "draft" = "draft",
@@ -111,7 +112,6 @@ export default class ArticlesContainer extends Vue {
       status: Statuses[status]
     };
 
-  
   if (this.id) {
       // update
       await axios
