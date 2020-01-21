@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get "articles/new", to: "homes#index"
   get "articles/:id/edit", to: "homes#index"
   get "articles/:id", to: "homes#index"
+  get "articles/draft", to: "homes#index"
+  get "articles/drafts/:id/edit", to: "homes#index"
+  get "mypage", to: "homes#index"
 
   namespace :api, format: "json" do
     namespace :v1 do

@@ -34,7 +34,6 @@ import { Vue, Component } from "vue-property-decorator";
 import Router from "../router/router";
 import marked from "marked";
 import hljs from "highlight.js";
-
 const headers = {
   headers: {
     Authorization: "Bearer",
@@ -44,21 +43,17 @@ const headers = {
     uid: localStorage.getItem("uid")
   }
 };
-
 @Component
-export default class ArticlesContainer extends Vue {
+export default class EditDraftArticleContainer extends Vue {
   id: string = "";
   title: string = "";
   body: string = "";
-
   async mounted(): Promise<void> {
-    // only update
     if (this.$route.params.id) {
       await this.fetchArticle(this.$route.params.id);
     }
   }
-
-  async created(): Promise<void>{
+  async created(): Promise<void> {
     const renderer = new marked.Renderer();
     let data = "";
     renderer.code = function(code, lang) {
@@ -68,10 +63,8 @@ export default class ArticlesContainer extends Vue {
       } catch (e) {
         data = hljs.highlightAuto(code).value;
       }
-
       return `<pre><code class="hljs"> ${data} </code></pre>`;
     };
-
     marked.setOptions({
       renderer: renderer,
       tables: true,
@@ -79,16 +72,14 @@ export default class ArticlesContainer extends Vue {
       langPrefix: ""
     });
   }
-
   get compiledMarkdown() {
     return function(text: string) {
       return marked(text);
     };
   }
-
   async fetchArticle(id: string): Promise<void> {
     await axios
-      .get(`/api/v1/articles/${id}`)
+      .get(`/api/v1/articles/drafts/${id}`, headers)
       .then(response => {
         this.id = response.data.id;
         this.title = response.data.title;
@@ -99,20 +90,17 @@ export default class ArticlesContainer extends Vue {
         alert(e.response.statusText);
       });
   }
-
   async createOrUpdateArticle(status: string): Promise<void> {
     enum Statuses {
       "draft" = "draft",
       "published" = "published"
     }
-
     const params = {
       title: this.title,
       body: this.body,
       status: Statuses[status]
     };
-
-  if (this.id) {
+    if (this.id) {
       // update
       await axios
         .patch(`/api/v1/articles/${this.id}`, params, headers)
@@ -177,7 +165,6 @@ export default class ArticlesContainer extends Vue {
 .body-form > .v-input__control {
   height: 100%;
 }
-
 .v-text-field .v-text-field__details {
   display: none;
 }
