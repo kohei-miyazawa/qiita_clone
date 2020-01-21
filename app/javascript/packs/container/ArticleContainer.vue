@@ -108,7 +108,7 @@ export default class ArticleContainer extends Vue {
 
   async confirmDeleteArticle(): Promise<void> {
     const result = confirm("この記事を削除してもよろしいですか？")
-    
+
     if (result) {
       await axios
         .delete(`/api/v1/articles/${this.article.id}`, headers)
