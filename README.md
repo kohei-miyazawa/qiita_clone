@@ -23,7 +23,7 @@ https://stark-badlands-95573.herokuapp.com/
 API は Rails、フロントは Vue で作成しました。
 ※ Vueは、サンプルコードを利用している為、自分で実装はしていません。
 
-model、API のテスト（Rspec）を実装し、heroku へのデプロイを行いました。
+model、API のテスト（Rspec）を実装し、CircleCI によるテスト・rubocop自動化の設定・heroku へのデプロイを行いました。
 
 ## スクリーンショット
 <img width="1382" alt="スクリーンショット 2020-01-22 2 32 46" src="https://user-images.githubusercontent.com/50073648/72861456-5188a400-3d0d-11ea-97f4-f13a280b4e35.png">
