@@ -30,3 +30,7 @@ model、API のテスト（Rspec）を実装し、heroku へのデプロイを�
 
 <img width="1370" alt="スクリーンショット 2020-01-22 11 49 30" src="https://user-images.githubusercontent.com/50073648/72861461-551c2b00-3d0d-11ea-85e3-7b2342c334b1.png">
 
+## モデル図
+<img width="545" alt="スクリーンショット 2020-01-17 12 02 05" src="https://user-images.githubusercontent.com/50073648/72863182-0e313400-3d13-11ea-9512-7ead95a1773a.png">
+
+コメント機能・いいね機能は未実装のため、今後追加できればと考えています。
