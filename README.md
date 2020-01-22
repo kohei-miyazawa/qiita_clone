@@ -1,13 +1,13 @@
 # README
 
-~Markdown記法で書いてみよう~ プログラミング学習共有サイト
+Markdown記法で書いてみよう プログラミング学習共有サイト
 ====
 ## 概要
 
 オンライン学習において、Gitを用いた共同開発で作成した、Qiita のクローンアプリです。（https://stark-badlands-95573.herokuapp.com/）
 ログイン用サンプルユーザー: email: sample@example.com, password: password
 
-* System dependencies
+### System dependencies
 - Ruby version 2.6.3
 - vue version 2.6.11
 
